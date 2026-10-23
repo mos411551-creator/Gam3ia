@@ -1,0 +1,8 @@
+{
+  "name": "جمعيتي - Gam3ety",
+  "description": "تطبيق إدارة الجمعيات اليومية والشهرية مع دعم السهم المشترك المرن وتحصيل فودافون كاش",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
