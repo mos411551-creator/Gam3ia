@@ -1,49 +1,41 @@
 name: Build Android APK
-
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
-
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
+      
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-
+          
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - name: Setup Java 17
+          
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Install deps
         run: bun install
 
-      - name: Build Web App
+      - name: Build Web
         run: bun run build
 
-      - name: Add Capacitor Android (first time only)
+      - name: Add Capacitor
         run: |
-          if [ ! -d "android" ]; then
-            bunx cap add android
-          fi
-          bunx cap sync android
+          bun add @capacitor/core @capacitor/cli @capacitor/android
+          npx cap init Gam3ety com.gam3ety.app --web-dir=dist || true
+          npx cap add android || true
+          npx cap sync
 
-      - name: Build Debug APK
+      - name: Build APK
         run: |
           cd android
           chmod +x gradlew
@@ -52,5 +44,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Gam3ety-debug-apk
+          name: Gam3ety-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
